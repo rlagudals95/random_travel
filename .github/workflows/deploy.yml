@@ -1,0 +1,54 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: CI_CD_KEYS
+
+    steps:
+      - name: Check Secrets
+        run: |
+          echo "Checking if secrets exist..."
+          [ -n "${{ secrets.AWS_ACCESS_KEY_ID }}" ] && echo "✅ AWS_ACCESS_KEY_ID exists" || echo "❌ AWS_ACCESS_KEY_ID is missing"
+          [ -n "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ] && echo "✅ AWS_SECRET_ACCESS_KEY exists" || echo "❌ AWS_SECRET_ACCESS_KEY is missing"
+          [ -n "${{ secrets.EC2_HOST }}" ] && echo "✅ EC2_HOST exists" || echo "❌ EC2_HOST is missing"
+          [ -n "${{ secrets.EC2_USERNAME }}" ] && echo "✅ EC2_USERNAME exists" || echo "❌ EC2_USERNAME is missing"
+          [ -n "${{ secrets.EC2_SSH_KEY }}" ] && echo "✅ EC2_SSH_KEY exists" || echo "❌ EC2_SSH_KEY is missing"
+
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: your-repository-name
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull ${{ steps.login-ecr.outputs.registry }}/your-repository-name:${{ github.sha }}
+            docker stop $(docker ps -a -q) || true
+            docker rm $(docker ps -a -q) || true
+            docker run -d -p 80:80 ${{ steps.login-ecr.outputs.registry }}/your-repository-name:${{ github.sha }}
