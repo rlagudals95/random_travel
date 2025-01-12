@@ -16,7 +16,7 @@ export const KakaoShareButton = ({
   title = '랜덤여행',
   description = '랜덤으로 여행지를 추천받아보세요!',
   imageUrl = '',
-  buttonText = '공유하기'
+  buttonText = '자세히 보기'
 }: KakaoShareButtonProps) => {
  
   const handleShare = () => {
