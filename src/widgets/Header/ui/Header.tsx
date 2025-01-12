@@ -1,6 +1,12 @@
-import { AppBar, Toolbar, Typography } from '@mui/material';
+'use client';
+
+import { AppBar, Toolbar, Typography, IconButton, Box } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useRouter } from 'next/navigation';
 
 export const Header = () => {
+  const router = useRouter();
+
   return (
     <AppBar 
       position="sticky" 
@@ -15,13 +21,22 @@ export const Header = () => {
         boxShadow: 'none'
       }}
     >
-      <Toolbar>
+      <Toolbar sx={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr' }}>
+        <Box>
+          <IconButton 
+            edge="start" 
+            color="inherit" 
+            onClick={() => router.back()}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Box>
         <Typography 
           variant="h6" 
           component="h1" 
           sx={{ 
             fontWeight: 'bold',
-            flexGrow: 1,
+            textAlign: 'center',
             background: 'linear-gradient(to right, #3B82F6, #6366F1)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent'
@@ -29,14 +44,7 @@ export const Header = () => {
         >
           랜덤여행
         </Typography>
-        {/* <Box>
-          <IconButton size="large" color="inherit">
-            <SearchIcon />
-          </IconButton>
-          <IconButton size="large" color="inherit">
-            <MoreVertIcon />
-          </IconButton>
-        </Box> */}
+        <Box />
       </Toolbar>
     </AppBar>
   );
