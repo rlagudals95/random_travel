@@ -36,7 +36,12 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/app
-            docker build -t my-app .
+            # 기존 컨테이너와 이미지를 정리
+            docker system prune -f
             docker stop my-app-container || true
             docker rm my-app-container || true
-            docker run -d --name my-app-container -p 3000:80 my-app
+            docker rmi my-app || true
+            
+            # 새 이미지 빌드 및 실행
+            docker build -t my-app .
+            docker run -d --name my-app-container -p 3000:80 --restart unless-stopped my-app
