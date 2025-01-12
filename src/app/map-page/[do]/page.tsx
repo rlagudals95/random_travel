@@ -1,35 +1,53 @@
 "use client";
 
-import { DESTINATIONS } from "@/entities/trip/model/constants";
+import { DESTINATIONS, DESTINATIONS_MAP } from "@/entities/trip/model/constants";
 import { Header } from "@/widgets/Header/ui/Header";
 import { KoreaMap } from "@/widgets/Map/ui/KoreaMap";
 import { Button } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { useState, useCallback, useEffect } from "react";
 import { getKeyByValue } from "../_utils/getKeyByValue";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 
 export default function Home() {
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [selectedDestination, setSelectedDestination] = useState<typeof DESTINATIONS[0] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const lastPath = usePathname().split('/').pop();
   
-  const destination = lastPath === 'all' ? DESTINATIONS : DESTINATIONS.filter((destination) => (destination.do) === getKeyByValue(lastPath as string));
+  const destinations = lastPath === 'all' ? DESTINATIONS : DESTINATIONS.filter((destination) => (destination.do) === getKeyByValue(lastPath as string));
 
-  const handleRandomTrip = useCallback(() => {
+  const handleRandomTrip = useCallback((isShuffle: boolean = true) => {
     setIsLoading(true);
    
-    // 애니메이션을 위한 딜레이 추가
-    const randomIndex = Math.floor(Math.random() * destination.length);
-    setSelectedDestination(destination[randomIndex]);
-    setIsLoading(false);
+    let destination;
     
-  }, [destination]);
+    if (isShuffle) {
+      const randomIndex = Math.floor(Math.random() * destinations.length);
+      destination = destinations[randomIndex];
+    } else {
+      // URL에 destination이 있으면 그것을 우선 사용
+      const urlDestination = searchParams.get('destination');
+      destination = urlDestination 
+        ? DESTINATIONS_MAP.get(urlDestination)
+        : destinations[Math.floor(Math.random() * destinations.length)];
+    }
+
+    if(destination) {
+      setSelectedDestination(destination);
+      setIsLoading(false);
+      router.replace(`/map-page/${lastPath}?destination=${destination.docity}`);
+    }
+  }, [destinations, lastPath, router, searchParams]);
 
   useEffect(() => {
-    handleRandomTrip();
+    handleRandomTrip(false);
   }, []);
 
   return (
@@ -51,7 +69,9 @@ export default function Home() {
                 fontWeight: 'bold',
                 boxShadow: 'none',
               }}
-              onClick={handleRandomTrip}
+              onClick={() => {
+                handleRandomTrip(true);
+              }}
             >
               {isLoading ? "여행지 선택 중..." : "랜덤 여행지 추천받기"}
             </Button>      
