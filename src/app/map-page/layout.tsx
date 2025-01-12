@@ -1,3 +1,4 @@
+import PageLayout from "@/widgets/PageLayout/PageLayout";
 
 export default function RootLayout({
   children,
@@ -5,8 +6,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <PageLayout>
       {children}
-    </div>
+    </PageLayout>
   );
 }
