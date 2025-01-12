@@ -16,6 +16,7 @@ export const DO_EN_LIST: DoEn[] = ["seoul", "gyeonggi", "gangwon", "chungcheong"
 
 export const DO_LIST:Do[] = ["서울" , "경기" , "강원" , "충청" , "전라" , "경상" , "제주"] as const; 
 
+
 export const DESTINATIONS: Region[] = [
     {"docity":"강원강릉시","do":"강원","city":"강릉시","longitude":128.878497222222,"latitude":37.7491361111111},
     {"docity":"강원고성군","do":"강원","city":"고성군","longitude":128.470163888888,"latitude":38.3779611111111},
@@ -313,3 +314,7 @@ export const DESTINATIONS: Region[] = [
     {"docity":"충청홍성군","do":"충청","city":"홍성군","longitude":126.662908333333,"latitude":36.5983611111111},
     {"docity":"충청대전시","do":"충청","city":"대전시","longitude":127.384861613445,"latitude":36.3506295013642}
 ] as const
+
+export const DESTINATIONS_MAP: Map<string, Region> = new Map(
+    DESTINATIONS.map(region => [region.docity, region])
+);

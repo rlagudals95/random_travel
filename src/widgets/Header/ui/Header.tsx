@@ -1,11 +1,7 @@
-'use client';
-
-import { AppBar, Toolbar, Typography, IconButton, Box } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useRouter } from 'next/navigation';
+import { AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { BackButton } from './_components/BackButton';
 
 export const Header = () => {
-  const router = useRouter();
 
   return (
     <AppBar 
@@ -16,20 +12,12 @@ export const Header = () => {
         margin: '0 auto',
         right: 0,
         left: 0,
-        bgcolor: 'rgba(255,255,255,0.8)',
-        backdropFilter: 'blur(20px)',
         boxShadow: 'none'
       }}
     >
       <Toolbar sx={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr' }}>
         <Box>
-          <IconButton 
-            edge="start" 
-            color="inherit" 
-            onClick={() => router.back()}
-          >
-            <ArrowBackIcon />
-          </IconButton>
+          <BackButton />
         </Box>
         <Typography 
           variant="h6" 
