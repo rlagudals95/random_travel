@@ -1,5 +1,6 @@
 import { AppBar, Toolbar, Typography, Box } from '@mui/material';
 import { BackButton } from './_components/BackButton';
+import Link from 'next/link';
 
 export const Header = () => {
 
@@ -19,19 +20,21 @@ export const Header = () => {
         <Box>
           <BackButton />
         </Box>
-        <Typography 
-          variant="h6" 
-          component="h1" 
-          sx={{ 
-            fontWeight: 'bold',
-            textAlign: 'center',
-            background: 'linear-gradient(to right, #3B82F6, #6366F1)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
-          }}
-        >
-          랜덤여행
-        </Typography>
+          <Link href="/">
+            <Typography 
+              variant="h6" 
+              component="h1" 
+              sx={{ 
+                fontWeight: 'bold',
+                textAlign: 'center',
+                background: 'linear-gradient(to right, #3B82F6, #6366F1)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}
+          >
+            랜덤여행
+          </Typography>
+        </Link>
         <Box />
       </Toolbar>
     </AppBar>
