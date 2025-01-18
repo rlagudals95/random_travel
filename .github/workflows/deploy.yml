@@ -70,13 +70,6 @@ jobs:
             .gitignore
             .github/**
 
-      - name: Build Docker image
-        env:
-          NEXT_PUBLIC_KAKAO_JS_KEY: ${{ secrets.KAKAO_JS_KEY }}
-        run: docker build \
-          --build-arg NEXT_PUBLIC_KAKAO_JS_KEY=$NEXT_PUBLIC_KAKAO_JS_KEY \
-          -t random-trip-app .
-
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -87,7 +80,9 @@ jobs:
             cd ${{ env.APP_PATH }}
             
             echo "Building Docker image locally..."
-            docker build -t ${{ env.DOCKER_IMAGE_NAME }} . || exit 1
+            docker build \
+              --build-arg NEXT_PUBLIC_KAKAO_JS_KEY=${{ secrets.KAKAO_JS_KEY }} \
+              -t ${{ env.DOCKER_IMAGE_NAME }} . || exit 1
             
             # 이미지가 성공적으로 생성되었는지 확인
             if ! docker images | grep ${{ env.DOCKER_IMAGE_NAME }}; then
@@ -103,6 +98,7 @@ jobs:
             docker run -d \
               --name ${{ env.DOCKER_CONTAINER_NAME }} \
               -p 80:3000 \
+              -e NEXT_PUBLIC_KAKAO_JS_KEY=${{ secrets.KAKAO_JS_KEY }} \
               ${{ env.DOCKER_IMAGE_NAME }}
             
             # 컨테이너가 성공적으로 시작되었는지 확인
