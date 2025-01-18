@@ -3,6 +3,7 @@
 import { IconButton } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import { useEffect } from 'react';
+import { KAKAO_JS_KEY } from '@/shared/constants/kakao';
 
 interface KakaoShareButtonProps {
   title?: string;
@@ -20,7 +21,7 @@ export const KakaoShareButton = ({
   useEffect(() => {
     if (window.Kakao) {
       if (!window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        window.Kakao.init(KAKAO_JS_KEY);
       }
     }
   }, []);

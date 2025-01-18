@@ -1,5 +1,6 @@
 'use client';
 
+import { KAKAO_JS_KEY } from '@/shared/constants/kakao';
 import Script from 'next/script';
 import { useEffect } from 'react';
 
@@ -7,7 +8,7 @@ export const KakaoInitializer = () => {
   useEffect(() => {
     const initializeKakao = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        window.Kakao.init(KAKAO_JS_KEY);
         console.log('Kakao SDK initialized');
       }
     };
