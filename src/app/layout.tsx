@@ -34,13 +34,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4867294106325031"
-          crossOrigin="anonymous"
-        />
-      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -48,6 +41,12 @@ export default function RootLayout({
         <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false`}
           strategy="beforeInteractive"
+        />
+         <Script
+          id="adsbygoogle-init"
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4867294106325031"
+          crossOrigin="anonymous"
         />
         <KakaoInitializer />
       </body>
