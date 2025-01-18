@@ -22,8 +22,9 @@ WORKDIR /app
 # 프로덕션에 필요한 파일만 복사
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/pnpm-lock.yaml ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/build ./build
+COPY --from=builder /app/node_modules ./
+COPY --from=builder /app/.next ./
+COPY --from=builder /app/public ./
 
 EXPOSE 80
 CMD ["pnpm", "start"]
