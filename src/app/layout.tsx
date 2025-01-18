@@ -4,6 +4,8 @@ import "./globals.css";
 import Script from "next/script";
 import { KakaoInitializer } from "@/features/share/ui/KakaoInitializer";
 import { KAKAO_JS_KEY } from "@/shared/constants/kakao";
+import { ScreenCaptureDetector } from "./_components/ScreanCaptureDetector";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +39,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <ScreenCaptureDetector />
         <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false`}
           strategy="beforeInteractive"

@@ -4,6 +4,7 @@ export const EventName = {
   SEARCH: 'Search',
   PLACE_SELECT: 'Place Select',
   ERROR: 'Error',
+  SCREEN_CAPTURE: 'Screen Capture',
 } as const;
 
 export type EventNameType = typeof EventName[keyof typeof EventName];
@@ -34,6 +35,11 @@ export interface EventProperties {
     message: string;
     path: string;
     stack?: string;
+  };
+  [EventName.SCREEN_CAPTURE]: {
+    type: 'desktop' | 'mobile';
+    source: string;
+    href: string;
   };
 } 
 
