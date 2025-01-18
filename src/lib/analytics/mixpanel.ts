@@ -1,6 +1,5 @@
 import mixpanel from 'mixpanel-browser';
 
-console.log("MIXPANEL_TOKEN::", process.env.NEXT_PUBLIC_MIXPANEL_TOKEN);
 // Mixpanel 초기화
 mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN as string, {
   debug: process.env.NODE_ENV !== 'production',
