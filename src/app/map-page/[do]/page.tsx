@@ -57,7 +57,7 @@ export default function Home() {
   }, [handleRandomTrip]);
 
   return (
-    <div className="min-h-screen w-full max-w-[430px] mx-auto bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen w-full max-w-[430px] mx-auto">
       <Header />
 
       <main className="flex flex-col items-center h-full">
