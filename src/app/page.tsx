@@ -5,7 +5,6 @@ import { CopyLinkButton } from "@/features/share/ui/CopyLinkButton";
 import { IntroSection } from "./_components/IntroSection";
 
 
-
 export default function Home() {
 
   return (
@@ -15,7 +14,7 @@ export default function Home() {
         <IntroSection />
         <SelectDoMenus />
 
-        <div className="flex items-center justify-center h-full gap-4 w-full mt-6 py-4 px-4">
+        <div className="flex items-center justify-center h-full gap-4 w-full mt-2 py-4 px-4">
           <CopyLinkButton/>
           <KakaoShareButton 
             title="지역 선택 공유하기" 
