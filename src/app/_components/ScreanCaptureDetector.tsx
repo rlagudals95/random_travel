@@ -9,6 +9,7 @@ export function ScreenCaptureDetector() {
   useScreenCapture({
     onCapture: () => {
       console.log('onCapture')
+      alert('onCapture')
       analytics.track(EventName.SCREEN_CAPTURE, {
         type: 'desktop',
         source: window.location.pathname,

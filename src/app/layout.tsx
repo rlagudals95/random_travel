@@ -39,7 +39,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        <ScreenCaptureDetector />
+        {/* TODO: 스크린샷 감지 기능 추가 */}
+        {/* <ScreenCaptureDetector /> */}
         <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false`}
           strategy="beforeInteractive"
