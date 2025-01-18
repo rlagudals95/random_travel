@@ -14,10 +14,13 @@ env:
   # 배포 경로
   APP_PATH: /home/${{ secrets.EC2_USERNAME }}/app
   
-  # 제외할 파일/디렉토리 목록
+  # 제외할 파일/디렉토리 목록 (순서 중요!)
   EXCLUDE_PATTERNS: |
-    # 버전 관리
-    **/.git*
+    # 버전 관리 (가장 먼저 제외)
+    .git/
+    .git/**
+    .gitignore
+    .github/
     # 의존성
     **/node_modules
     # 테스트 관련
