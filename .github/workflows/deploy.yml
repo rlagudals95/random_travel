@@ -79,18 +79,15 @@ jobs:
           script: |
             cd ${{ env.APP_PATH }}
             
-            echo "Current directory contents:"
-            ls -la
+            echo "Building Docker image locally..."
+            docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
             
-            echo "Package files check:"
-            cat package.json
-            cat package-lock.json
+            echo "Stopping existing container..."
+            docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true
+            docker rm ${{ env.DOCKER_CONTAINER_NAME }} || true
             
-            echo "Building Docker image..."
-            docker build -t ${{ env.DOCKER_IMAGE_NAME }} . 2>&1 | tee build.log
-            
-            if [ $? -ne 0 ]; then
-              echo "Build failed. Build logs:"
-              cat build.log
-              exit 1
-            fi
+            echo "Starting new container..."
+            docker run -d \
+              --name ${{ env.DOCKER_CONTAINER_NAME }} \
+              -p ${{ env.HOST_PORT }}:${{ env.CONTAINER_PORT }} \
+              ${{ env.DOCKER_IMAGE_NAME }}
