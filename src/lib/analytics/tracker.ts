@@ -19,6 +19,10 @@ class AnalyticsTracker {
     properties: EventProperties[E]
   ): void {
 
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`[dev Analytics] ${eventName}:`, properties);
+    }
+
     console.log("NODE_ENV", process.env.NODE_ENV);
     console.log("tracking info: ",eventName, properties);
 
