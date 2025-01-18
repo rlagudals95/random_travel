@@ -1,17 +1,30 @@
-# pnpm 공식 이미지 사용
-FROM docker.io/pnpm:8
+# 베이스 이미지
+FROM node:18-alpine AS base
+RUN npm install -g pnpm
 WORKDIR /app
 
-# 빌드된 결과물과 필요한 파일들 복사
-COPY .next ./.next
-COPY public ./public
+# 빌드 스테이지
+FROM base AS builder
+# package.json과 pnpm-lock.yaml 복사
 COPY package.json pnpm-lock.yaml ./
 
-# 프로덕션 의존성만 설치
-RUN pnpm install --prod --frozen-lockfile
+# 의존성 설치
+RUN pnpm install --frozen-lockfile
 
-ENV NODE_ENV=production
-ENV HOSTNAME=0.0.0.0
-EXPOSE 3000
+# 소스 복사 및 빌드
+COPY . .
+RUN pnpm run build
 
+# 실행 스테이지
+FROM base
+WORKDIR /app
+
+# 프로덕션에 필요한 파일만 복사
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/pnpm-lock.yaml ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+
+EXPOSE 80
 CMD ["pnpm", "start"]
