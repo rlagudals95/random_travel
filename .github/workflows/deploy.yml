@@ -4,19 +4,19 @@ on:
   push:
     branches: [main]
 
+env:
+  # Docker 관련 환경 변수
+  DOCKER_IMAGE_NAME: random-trip-app              # Docker 이미지 이름
+  DOCKER_CONTAINER_NAME: random-trip-app-container # Docker 컨테이너 이름
+  HOST_PORT: 80                          # 호스트 포트
+  CONTAINER_PORT: 80                     # 컨테이너 포트
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: CI_CD_KEYS
 
     steps:
-      - name: Check Secrets
-        run: |
-          echo "Checking if secrets exist..."
-          [ -n "${{ secrets.EC2_HOST }}" ] && echo "✅ EC2_HOST exists" || echo "❌ EC2_HOST is missing"
-          [ -n "${{ secrets.EC2_USERNAME }}" ] && echo "✅ EC2_USERNAME exists" || echo "❌ EC2_USERNAME is missing"
-          [ -n "${{ secrets.EC2_SSH_KEY }}" ] && echo "✅ EC2_SSH_KEY exists" || echo "❌ EC2_SSH_KEY is missing"
-
       - uses: actions/checkout@v2
 
       - name: Copy files to EC2
@@ -27,6 +27,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "."
           target: "/home/${{ secrets.EC2_USERNAME }}/app"
+          overwrite: true
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -35,13 +36,25 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/app
-            # 기존 컨테이너와 이미지를 정리
-            docker system prune -f
-            docker stop my-app-container || true
-            docker rm my-app-container || true
-            docker rmi my-app || true
+            cd /home/${{ secrets.EC2_USERNAME }}/app
             
-            # 새 이미지 빌드 및 실행
-            docker build -t my-app .
-            docker run -d --name my-app-container -p 3000:80 --restart unless-stopped my-app
+            # Docker 시스템 정리
+            docker system prune -f
+            
+            # 기존 컨테이너 정리
+            docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true
+            docker rm ${{ env.DOCKER_CONTAINER_NAME }} || true
+            docker rmi ${{ env.DOCKER_IMAGE_NAME }} || true
+            
+            # 디버깅용 파일 목록 확인
+            ls -la
+            
+            # Docker 이미지 새로 빌드
+            docker build -t ${{ env.DOCKER_IMAGE_NAME }} -f Dockerfile .
+            
+            # 새 컨테이너 실행
+            docker run -d \
+              --name ${{ env.DOCKER_CONTAINER_NAME }} \
+              -p ${{ env.HOST_PORT }}:${{ env.CONTAINER_PORT }} \
+              --restart unless-stopped \
+              ${{ env.DOCKER_IMAGE_NAME }}
