@@ -80,7 +80,13 @@ jobs:
             cd ${{ env.APP_PATH }}
             
             echo "Building Docker image locally..."
-            docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
+            docker build -t ${{ env.DOCKER_IMAGE_NAME }} . || exit 1
+            
+            # 이미지가 성공적으로 생성되었는지 확인
+            if ! docker images | grep ${{ env.DOCKER_IMAGE_NAME }}; then
+              echo "Failed to build Docker image"
+              exit 1
+            fi
             
             echo "Stopping existing container..."
             docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true
@@ -91,3 +97,10 @@ jobs:
               --name ${{ env.DOCKER_CONTAINER_NAME }} \
               -p ${{ env.HOST_PORT }}:${{ env.CONTAINER_PORT }} \
               ${{ env.DOCKER_IMAGE_NAME }}
+            
+            # 컨테이너가 성공적으로 시작되었는지 확인
+            if ! docker ps | grep ${{ env.DOCKER_CONTAINER_NAME }}; then
+              echo "Container failed to start. Checking logs..."
+              docker logs ${{ env.DOCKER_CONTAINER_NAME }}
+              exit 1
+            fi
