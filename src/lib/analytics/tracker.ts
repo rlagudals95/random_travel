@@ -18,6 +18,10 @@ class AnalyticsTracker {
     eventName: E,
     properties: EventProperties[E]
   ): void {
+
+    console.log("NODE_ENV", process.env.NODE_ENV);
+    console.log("tracking info: ",eventName, properties);
+    
     mixpanel.track(eventName, properties);
 
     if (process.env.NODE_ENV !== 'production') {
