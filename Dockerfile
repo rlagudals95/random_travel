@@ -5,10 +5,8 @@ WORKDIR /app
 # package.json과 package-lock.json 복사
 COPY package*.json ./
 
-# npm 업데이트 및 의존성 설치
-RUN npm install -g npm@latest && \
-    npm cache clean --force && \
-    npm ci
+# 기본 의존성 설치
+RUN npm install
 
 # 소스 복사 및 빌드
 COPY . .
