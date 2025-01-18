@@ -4,7 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import { KakaoInitializer } from "@/features/share/ui/KakaoInitializer";
 import { KAKAO_JS_KEY } from "@/shared/constants/kakao";
-import { ScreenCaptureDetector } from "./_components/ScreanCaptureDetector";
+import { ScrollToTop } from "./_components/ScrollToTop";
 
 
 const geistSans = Geist({
@@ -38,6 +38,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ScrollToTop />
         {children}
         {/* TODO: 스크린샷 감지 기능 추가 */}
         {/* <ScreenCaptureDetector /> */}
