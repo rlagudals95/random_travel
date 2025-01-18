@@ -1,11 +1,18 @@
 import mixpanel from 'mixpanel-browser';
 
-// Mixpanel 초기화
-mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN as string, {
-  debug: process.env.NODE_ENV !== 'production',
-  track_pageview: true,
-  persistence: 'localStorage'
-});
+export const initMixpanel = () => {
+  const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+
+  if (MIXPANEL_TOKEN) {
+    mixpanel.init(MIXPANEL_TOKEN, {
+      debug: process.env.NODE_ENV !== 'production',
+      track_pageview: true,
+      persistence: 'localStorage'
+    });
+  } else {
+    console.warn('Mixpanel token not found. Tracking will be disabled.');
+  }
+};
 
 // 이벤트 트래킹 헬퍼 함수
 export const track = (eventName: string, properties?: Record<string, unknown>) => {

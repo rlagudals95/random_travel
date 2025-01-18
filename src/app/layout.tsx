@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import { KakaoInitializer } from "@/features/share/ui/KakaoInitializer";
 import { KAKAO_JS_KEY } from "@/shared/constants/kakao";
+import { MixpanelInit } from "./_components/MixpanelInit";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <MixpanelInit/>
         {children}
         <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false`}
