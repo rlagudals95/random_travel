@@ -73,18 +73,18 @@ jobs:
           script: |
             cd ${{ env.APP_PATH }}
             
-            echo "Cleaning up Docker resources..."
-            docker system prune -f
-            docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true
-            docker rm ${{ env.DOCKER_CONTAINER_NAME }} || true
-            docker rmi ${{ env.DOCKER_IMAGE_NAME }} || true
+            echo "Current directory contents:"
+            ls -la
             
-            echo "Building new Docker image..."
-            docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
+            echo "Package files check:"
+            cat package.json
+            cat package-lock.json
             
-            echo "Starting new container..."
-            docker run -d \
-              --name ${{ env.DOCKER_CONTAINER_NAME }} \
-              -p ${{ env.HOST_PORT }}:${{ env.CONTAINER_PORT }} \
-              --restart unless-stopped \
-              ${{ env.DOCKER_IMAGE_NAME }}
+            echo "Building Docker image..."
+            docker build -t ${{ env.DOCKER_IMAGE_NAME }} . 2>&1 | tee build.log
+            
+            if [ $? -ne 0 ]; then
+              echo "Build failed. Build logs:"
+              cat build.log
+              exit 1
+            fi
