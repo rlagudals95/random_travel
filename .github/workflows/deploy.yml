@@ -62,7 +62,13 @@ jobs:
           source: "."
           target: ${{ env.APP_PATH }}
           overwrite: true
-          exclude: ${{ env.EXCLUDE_PATTERNS }}
+          rm: true  # 기존 파일 제거
+          strip_components: 0
+          exclude: |
+            **/.git*
+            **/.git/**
+            .gitignore
+            .github/**
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
