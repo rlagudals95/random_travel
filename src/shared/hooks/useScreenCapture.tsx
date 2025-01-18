@@ -58,5 +58,5 @@ export const useScreenCapture = ({ onCapture, onMobileCapture }: UseScreenCaptur
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       document.removeEventListener('keydown', handleDesktopCapture)
     }
-  }, [handleVisibilityChange, handleDesktopCapture])
+  }, [handleVisibilityChange, handleDesktopCapture, onMobileCapture])
 }
