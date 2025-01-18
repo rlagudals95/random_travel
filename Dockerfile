@@ -2,9 +2,13 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 
-# 의존성 설치 최적화
+# package.json과 package-lock.json 복사
 COPY package*.json ./
-RUN npm ci --only=production
+
+# npm 업데이트 및 의존성 설치
+RUN npm install -g npm@latest && \
+    npm cache clean --force && \
+    npm ci
 
 # 소스 복사 및 빌드
 COPY . .
