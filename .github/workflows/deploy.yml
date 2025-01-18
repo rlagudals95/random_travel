@@ -95,7 +95,7 @@ jobs:
             echo "Starting new container..."
             docker run -d \
               --name ${{ env.DOCKER_CONTAINER_NAME }} \
-              -p ${{ env.HOST_PORT }}:${{ env.CONTAINER_PORT }} \
+              -p 80:3000 \
               ${{ env.DOCKER_IMAGE_NAME }}
             
             # 컨테이너가 성공적으로 시작되었는지 확인
