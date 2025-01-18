@@ -4,7 +4,6 @@ import "./globals.css";
 import Script from "next/script";
 import { KakaoInitializer } from "@/features/share/ui/KakaoInitializer";
 import { KAKAO_JS_KEY } from "@/shared/constants/kakao";
-import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
