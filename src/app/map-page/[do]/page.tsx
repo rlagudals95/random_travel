@@ -5,7 +5,7 @@ import { Header } from "@/widgets/Header/ui/Header";
 import { KoreaMap } from "@/widgets/Map/ui/KoreaMap";
 import { Button } from "@mui/material";
 import { usePathname } from "next/navigation";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { getKeyByValue } from "../_utils/getKeyByValue";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
@@ -17,6 +17,7 @@ export default function Home() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const firstRender = useRef(false);
 
   const [selectedDestination, setSelectedDestination] = useState<typeof DESTINATIONS[0] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,8 +50,11 @@ export default function Home() {
   }, [destinations, lastPath, router, searchParams]);
 
   useEffect(() => {
-    handleRandomTrip(false);
-  }, []);
+    if(firstRender.current === false) {
+      handleRandomTrip(false);
+      firstRender.current = true;
+    }
+  }, [handleRandomTrip]);
 
   return (
     <div className="min-h-screen w-full max-w-[430px] mx-auto bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">

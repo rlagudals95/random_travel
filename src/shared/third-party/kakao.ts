@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createUrlWithParams } from "../utils/url";
 
 export function getKakaoInstance(window: any): any {

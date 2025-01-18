@@ -1,6 +1,16 @@
 declare global {
   interface Window {
-    Kakao: any
+    Kakao: {
+      init: (params: unknown) => void;
+      Share: {
+        sendDefault: (params: unknown) => void;
+      };
+      Link: {
+        sendDefault: (params: unknown) => void;
+      };
+      isInitialized: () => boolean;
+    };
+    
   }
 }
 
