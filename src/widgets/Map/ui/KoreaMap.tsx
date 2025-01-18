@@ -11,7 +11,7 @@ export const KoreaMap = ({ selectedRegion }: KoreaMapProps) => {
       <Map
         center={{ lat: selectedRegion?.latitude || 36.2, lng: selectedRegion?.longitude || 127.9 }}
         style={{ width: "100%", height: "400px" }}
-        level={selectedRegion ? 8 : 13}
+        level={13}
       >
         {selectedRegion && (
           <MapMarker
