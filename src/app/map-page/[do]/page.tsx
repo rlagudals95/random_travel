@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { KakaoShareButton } from "@/features/share/ui/KakaoShareButton";
 import { CopyLinkButton } from "@/features/share/ui/CopyLinkButton";
+import { PageViewAnalytics } from "@/components/PageViewAnalytics";
+import { PageName } from "@/lib/analytics/types";
 
 
 export default function Home() {
@@ -59,8 +61,8 @@ export default function Home() {
   return (
     <div className="min-h-screen w-full max-w-[430px] mx-auto">
       <Header />
-
       <main className="flex flex-col items-center h-full">
+        <PageViewAnalytics title={PageName.MAP_PAGE} />
         <KoreaMap selectedRegion={selectedDestination}/>
         <div className="flex flex-col items-center justify-center h-full gap-4 w-full py-4 px-4">
           <Button
