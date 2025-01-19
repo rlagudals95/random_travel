@@ -1,10 +1,9 @@
 import { Header } from "@/widgets/Header/ui/Header";
 import { SelectDoMenus } from "./_components/SelectDoMenus";
-import { KakaoShareButton } from "@/features/share/ui/KakaoShareButton";
-import { CopyLinkButton } from "@/features/share/ui/CopyLinkButton";
 import { IntroSection } from "./_components/IntroSection";
 import { PageViewAnalytics } from "@/components/PageViewAnalytics";
 import { PageName } from "@/lib/analytics/types";
+import { FloatingShareMenu } from "@/components/FloatingShareMenu";
 
 
 
@@ -17,14 +16,7 @@ export default function Home() {
         <PageViewAnalytics title={PageName.HOME} />
         <IntroSection />
         <SelectDoMenus />
-
-        <div className="flex items-center justify-center h-full gap-4 w-full mt-2 py-4 px-4">
-          <CopyLinkButton/>
-          <KakaoShareButton 
-            title="지역 선택 공유하기" 
-            description="지역 선택 페이지 공유하기" 
-         />
-        </div>
+        <FloatingShareMenu/>
       </main>
     </div>
   );
