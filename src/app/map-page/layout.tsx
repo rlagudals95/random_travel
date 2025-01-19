@@ -1,5 +1,6 @@
 import PageLayout from "@/widgets/PageLayout/PageLayout";
 import QueryProvider from "../_providers/QueryProvider";
+import { Header } from "@/widgets/Header/ui/Header";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,9 @@ export default function RootLayout({
 }>) {
   return (
     <QueryProvider>
+      
       <PageLayout>
+        <Header/>
         {children}
       </PageLayout>
     </QueryProvider>

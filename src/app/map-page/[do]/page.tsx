@@ -29,7 +29,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen w-full max-w-[430px] mx-auto">
-      <Header />
+
       <main className="flex flex-col items-center h-full">
         <PageViewAnalytics title={PageName.MAP_PAGE} />
         <KoreaMap selectedRegion={selectedDestination}/>

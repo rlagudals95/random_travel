@@ -5,8 +5,8 @@ export default function PageLayout({
     children: React.ReactNode;
   }>) {
     return (
-    <div className="min-h-screen w-full max-w-[430px] mx-auto">
-        {children}
-    </div>
-);
+      <div className="min-h-screen w-full max-w-[430px] mx-auto">
+          {children}
+      </div>
+  );
 }
