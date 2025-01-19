@@ -1,62 +1,31 @@
 "use client";
 
-import { DESTINATIONS, DESTINATIONS_MAP } from "@/entities/trip/model/constants";
+import { DESTINATIONS } from "@/entities/trip/model/constants";
 import { Header } from "@/widgets/Header/ui/Header";
 import { KoreaMap } from "@/widgets/Map/ui/KoreaMap";
 import { Button } from "@mui/material";
 import { usePathname } from "next/navigation";
-import { useState, useCallback, useEffect, useRef } from "react";
+
 import { getKeyByValue } from "../_utils/getKeyByValue";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+
 import { KakaoShareButton } from "@/features/share/ui/KakaoShareButton";
 import { CopyLinkButton } from "@/features/share/ui/CopyLinkButton";
 import { PageViewAnalytics } from "@/components/PageViewAnalytics";
 import { PageName } from "@/lib/analytics/types";
+import { useRandomDestination } from "../_hooks/useRandomDestination";
 
 
 export default function Home() {
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const firstRender = useRef(false);
-
-  const [selectedDestination, setSelectedDestination] = useState<typeof DESTINATIONS[0] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const lastPath = usePathname().split('/').pop();
-  
+  const lastPath = usePathname().split('/')?.pop() ?? '';
   const destinations = lastPath === 'all' ? DESTINATIONS : DESTINATIONS.filter((destination) => (destination.do) === getKeyByValue(lastPath as string));
 
-  const handleRandomTrip = useCallback((isShuffle: boolean = true) => {
-    setIsLoading(true);
-   
-    let destination;
-    
-    if (isShuffle) {
-      const randomIndex = Math.floor(Math.random() * destinations.length);
-      destination = destinations[randomIndex];
-    } else {
-      // URL에 destination이 있으면 그것을 우선 사용
-      const urlDestination = searchParams.get('destination');
-      destination = urlDestination 
-        ? DESTINATIONS_MAP.get(urlDestination)
-        : destinations[Math.floor(Math.random() * destinations.length)];
-    }
+  const {
+    selectedDestination,
+    isLoading,
+    handleRandomTrip
+  } = useRandomDestination({ destinations, lastPath });
 
-    if(destination) {
-      setSelectedDestination(destination);
-      setIsLoading(false);
-      router.replace(`/map-page/${lastPath}?destination=${destination.docity}`);
-    }
-  }, [destinations, lastPath, router, searchParams]);
-
-  useEffect(() => {
-    if(firstRender.current === false) {
-      handleRandomTrip(false);
-      firstRender.current = true;
-    }
-  }, [handleRandomTrip]);
 
   return (
     <div className="min-h-screen w-full max-w-[430px] mx-auto">
@@ -70,8 +39,8 @@ export default function Home() {
               variant="contained"
               fullWidth
               sx={{
-                py: 1.5,  // 위아래 패딩 증가
-                borderRadius: 10,  // 더 둥근 모서리
+                py: 1.5,  
+                borderRadius: 10, 
                 textAlign: 'center',
                 fontSize: '1.1rem',
                 fontWeight: 'bold',
