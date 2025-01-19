@@ -84,7 +84,7 @@ export default function Home() {
               {isLoading ? "여행지 선택 중..." : "랜덤 여행지 추천받기"}
             </Button>      
         </div>
-
+      
         <div className="flex items-center justify-center h-full gap-4 w-full mt-6 py-4 px-4">
           <CopyLinkButton/>
           <KakaoShareButton 

@@ -1,4 +1,5 @@
 import PageLayout from "@/widgets/PageLayout/PageLayout";
+import QueryProvider from "../_providers/QueryProvider";
 
 export default function RootLayout({
   children,
@@ -6,8 +7,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <PageLayout>
-      {children}
-    </PageLayout>
+    <QueryProvider>
+      <PageLayout>
+        {children}
+      </PageLayout>
+    </QueryProvider>
   );
 }
