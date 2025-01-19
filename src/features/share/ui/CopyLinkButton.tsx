@@ -28,9 +28,11 @@ export const CopyLinkButton = () => {
       <IconButton
         onClick={handleCopy}
         color="inherit"
+        size="large"
         aria-label="copy link"
         sx={{
           fontSize: 30,
+          backgroundColor: 'white',
           '&:hover': {
             backgroundColor: 'rgba(0, 0, 0, 0.04)',
             transform: 'scale(1.1)',
