@@ -5,8 +5,6 @@ import { PageViewAnalytics } from "@/components/PageViewAnalytics";
 import { PageName } from "@/lib/analytics/types";
 import { FloatingShareMenu } from "@/components/FloatingShareMenu";
 
-
-
 export default function Home() {
 
   return (
