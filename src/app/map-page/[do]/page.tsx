@@ -1,17 +1,15 @@
 "use client";
 
 import { DESTINATIONS } from "@/entities/trip/model/constants";
-
 import { KoreaMap } from "@/widgets/Map/ui/KoreaMap";
 import { Button } from "@mui/material";
 import { usePathname } from "next/navigation";
 
 import { getKeyByValue } from "../_utils/getKeyByValue";
 
-import { useRandomDestination } from "../_hooks/useRandomDestination";
-
 import { PageViewAnalytics } from "@/components/PageViewAnalytics";
 import { PageName } from "@/lib/analytics/types";
+import { useRandomDestination } from "../_hooks/useRandomDestination";
 import { FloatingShareMenu } from "@/components/FloatingShareMenu";
 
 
@@ -53,7 +51,7 @@ export default function Home() {
               {isLoading ? "여행지 선택 중..." : "랜덤 여행지 추천받기"}
             </Button>      
         </div>
-
+      
         <FloatingShareMenu/>
       </main>
     </div>

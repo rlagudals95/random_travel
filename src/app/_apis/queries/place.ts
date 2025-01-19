@@ -5,7 +5,7 @@ import { getNaverSearchResultWithFetchCache } from "@/app/map-page/_apis/getNave
 
 export function usePlaceQuery({ query }: { query: string }) {
   return useQuery({
-    queryKey: ['place'],
+    queryKey: ['place', query],
     queryFn: () => getNaverSearchResultWithFetchCache({ query }),
   })
 }

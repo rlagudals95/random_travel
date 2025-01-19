@@ -15,7 +15,6 @@ export default function QueryProvider({
         defaultOptions: {
           queries: {
             staleTime: 60 * 1000, // 1분
-            // 기타 옵션 설정
           },
         },
       })

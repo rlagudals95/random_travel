@@ -4,6 +4,8 @@ import { cache } from 'react'
 import { createApiClient } from "@/shared/api/client"
 import { unstable_cache } from 'next/cache'
 
+const NAVER_SEARCH_URL = 'https://search.naver.com/search.naver?where=nexearch&sm=top_sly.hst&fbm=0&acr=1&ie=utf8&query='
+
 interface RequestParams {
   query: string
   revalidate?: number
@@ -20,7 +22,7 @@ export async function getNaverSearchResultWithCache({
   const getCachedResult = unstable_cache(
     async () => {
       const client = createApiClient({
-        prefixUrl: `https://search.naver.com/search.naver?where=nexearch&sm=top_sly.hst&fbm=0&acr=1&ie=utf8&query=${query}`,
+        prefixUrl: NAVER_SEARCH_URL + query,
       })
       const response = await client.get('')
       return response.text()
@@ -41,7 +43,7 @@ export async function getNaverSearchResultWithCache({
 // - 장점: Next.js의 안정적인 캐싱 시스템 사용, 설정이 단순
 // - 단점: fetch API에 종속적, 세밀한 캐시 제어 불가
 export const getNaverSearchResultWithFetchCache = cache(async ({ query, revalidate = 86400 }: RequestParams) => {
-  const response = await fetch(`https://search.naver.com/search.naver?where=nexearch&sm=top_sly.hst&fbm=0&acr=1&ie=utf8&query=${query}`, {
+  const response = await fetch(NAVER_SEARCH_URL + query, {
     next: { 
       revalidate // 캐시 유효 시간 (초 단위, 24시간)
       // fetch의 next 옵션은 Next.js의 기본 캐싱 시스템 사용
@@ -59,7 +61,7 @@ export const getNaverSearchResultWithFetchCache = cache(async ({ query, revalida
 // - 캐싱이 필요 없는 실시간 데이터에 적합
 export async function getPlaceNoCache({ query }: RequestParams) {
   const client = createApiClient({
-    prefixUrl: `https://search.naver.com/search.naver?where=nexearch&sm=top_sly.hst&fbm=0&acr=1&ie=utf8&query=${query}`,
+    prefixUrl: NAVER_SEARCH_URL + query,
   })
 
   const response = await client.get('')
