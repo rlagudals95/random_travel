@@ -1,18 +1,18 @@
 "use client";
 
 import { DESTINATIONS } from "@/entities/trip/model/constants";
-import { Header } from "@/widgets/Header/ui/Header";
+
 import { KoreaMap } from "@/widgets/Map/ui/KoreaMap";
 import { Button } from "@mui/material";
 import { usePathname } from "next/navigation";
 
 import { getKeyByValue } from "../_utils/getKeyByValue";
 
-import { KakaoShareButton } from "@/features/share/ui/KakaoShareButton";
-import { CopyLinkButton } from "@/features/share/ui/CopyLinkButton";
+import { useRandomDestination } from "../_hooks/useRandomDestination";
+
 import { PageViewAnalytics } from "@/components/PageViewAnalytics";
 import { PageName } from "@/lib/analytics/types";
-import { useRandomDestination } from "../_hooks/useRandomDestination";
+import { FloatingShareMenu } from "@/components/FloatingShareMenu";
 
 
 export default function Home() {
@@ -53,14 +53,8 @@ export default function Home() {
               {isLoading ? "여행지 선택 중..." : "랜덤 여행지 추천받기"}
             </Button>      
         </div>
-      
-        <div className="flex items-center justify-center h-full gap-4 w-full mt-6 py-4 px-4">
-          <CopyLinkButton/>
-          <KakaoShareButton 
-            title="랜덤 여행지 공유하기" 
-            description="랜덤 여행지 공유하기 페이지입니다." 
-         />
-        </div>
+
+        <FloatingShareMenu/>
       </main>
     </div>
   );
