@@ -54,9 +54,13 @@ export const KakaoShareButton = ({
 
   return (
     <IconButton 
+      size="large"
       onClick={handleShare}
       color="inherit"
       aria-label="share"
+      sx={{
+        backgroundColor: 'white',
+      }}
     >
       <ShareIcon />
     </IconButton>
