@@ -10,9 +10,13 @@ import { useRouter } from "next/navigation";
 export const SelectDoMenus = () => {
   const router = useRouter();
   const [activeRegion, setActiveRegion] = useState<string | null>(null);
+  const [isSpinning, setIsSpinning] = useState(false);
   const regions = ['all', ...(DO_MAP.keys())];
 
-  const handleRandomSelect = () => {
+  const handleRandomSelect = async () => {
+    if (isSpinning) return; // 이미 실행 중이면 중복 실행 방지
+    
+    setIsSpinning(true);
     let count = 0;
     const duration = 3000; // 총 룰렛 동작 시간 (ms)
     const interval = 100; // 각 선택 간격 (ms)
@@ -25,6 +29,7 @@ export const SelectDoMenus = () => {
 
       if (count >= maxCount) {
         clearInterval(timer);
+        setIsSpinning(false);
         
         const finalRegion = regions[randomIndex];
         const href = `/map-page/${finalRegion === 'all' ? 'all' : DO_MAP.get(finalRegion as Do)}`;
@@ -42,10 +47,11 @@ export const SelectDoMenus = () => {
             region={region} 
             href={`/map-page/${region === 'all' ? 'all' : DO_MAP.get(region as Do)}`}
             active={region === activeRegion}
+            disabled={isSpinning}
           />
         ))}
       </div>
-      <CtaButton onClick={handleRandomSelect}>
+      <CtaButton disabled={isSpinning} onClick={handleRandomSelect}>
         랜덤선택
       </CtaButton>
     </div>
